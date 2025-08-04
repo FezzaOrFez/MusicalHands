@@ -140,7 +140,13 @@ while cap.isOpened():
             dis = round(distance,2)
             volume = getVolume()
             if volume != None:
-              frame = cv2.putText(frame, 'volume:' + str(round(volume,2)), (5,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 0, 160), 1, cv2.LINE_AA)
+              x = (int(results.multi_hand_landmarks[0].landmark[8].x*cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(results.multi_hand_landmarks[0].landmark[8].y*cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+              y = (int(results.multi_hand_landmarks[1].landmark[8].x*cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(results.multi_hand_landmarks[1].landmark[8].y*cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+              
+              midpoint = (int((x[0]+y[0])/2),int((x[1]+y[1])/2))
+
+              frame = cv2.putText(frame, 'volume:' + str(round(volume,2)), midpoint, cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 0, 160), 1, cv2.LINE_AA)
+              frame = cv2.line(frame,x,y,(100, 0, 160),5,cv2.LINE_AA)
             else:
               frame = cv2.putText(frame, 'volume: Error', (5,100), cv2.FONT_HERSHEY_SIMPLEX, 1, (100, 0, 160), 1, cv2.LINE_AA)
             if dis:
